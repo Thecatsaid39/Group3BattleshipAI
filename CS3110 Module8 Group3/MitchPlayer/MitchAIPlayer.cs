@@ -28,7 +28,6 @@ namespace Module8
         private CurrentTargetDirectionTypes _currentTargetDirection = CurrentTargetDirectionTypes.NotSet;
         private bool _eliminateMode = false;
         private Ships _ships;
-        private int _mostVulnerablePlayer = 0;
         private int _lowestShipCount = 0;
         private bool _allowSelfDestruct = true;
 
@@ -242,7 +241,10 @@ namespace Module8
                         if (r.PlayerIndex != Index)
                         {
                             Debug.WriteLine("Player {0} reported a hit at ({1},{2}), adding a new target to the target stack.",r.PlayerIndex,r.Position.X,r.Position.Y);
-                            _targetStack.Push(new Target(r.PlayerIndex, r.Position, _playersData[r.PlayerIndex].StatusGrid));
+                            // Check if position is already marked Hit in the status grid to ensure duplicate targets aren't created.
+                            // Happens when dumb player shoots on a position that has already been fired upon.
+                            if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != AttackResultType.Hit)
+                                _targetStack.Push(new Target(r.PlayerIndex, r.Position, _playersData[r.PlayerIndex].StatusGrid));
                         }
                         _playersData[r.PlayerIndex].StatusGrid[r.Position.X, r.Position.Y] = AttackResultType.Hit;
                     }
