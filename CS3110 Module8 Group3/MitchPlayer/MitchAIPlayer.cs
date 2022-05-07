@@ -167,9 +167,10 @@ namespace Module8
             {
                 // Initialize _playersData to player count
                 _playersData = new List<PlayerData>(results.Count);
-                
+                Debug.WriteLine($"{_playersData.Count} Players are being added to _playersData");
                 foreach (var r in results)
                 {
+                    Debug.WriteLine($"Player {r.PlayerIndex} has been added with an initial value of {r.ResultType} in it's status grid at ({r.Position.X},{r.Position.Y})");
                     _playersData.Insert(r.PlayerIndex,new PlayerData(GridSize,_ships, r));
                 }
             }

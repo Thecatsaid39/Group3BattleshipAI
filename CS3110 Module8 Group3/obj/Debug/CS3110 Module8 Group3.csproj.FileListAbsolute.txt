@@ -5,3 +5,10 @@
 /Users/mitchellogden/RiderProjects/BattleshipStart/CS3110 Module8 Group3/obj/Debug/CS3110 Module8 Group3.csproj.CoreCompileInputs.cache
 /Users/mitchellogden/RiderProjects/BattleshipStart/CS3110 Module8 Group3/obj/Debug/CS3110 Module8 Group3.exe
 /Users/mitchellogden/RiderProjects/BattleshipStart/CS3110 Module8 Group3/obj/Debug/CS3110 Module8 Group3.pdb
+/Users/mitchellogden/RiderProjects/Group3BattleshipAI/CS3110 Module8 Group3/bin/Debug/CS3110 Module8 Group3.exe.config
+/Users/mitchellogden/RiderProjects/Group3BattleshipAI/CS3110 Module8 Group3/bin/Debug/CS3110 Module8 Group3.exe
+/Users/mitchellogden/RiderProjects/Group3BattleshipAI/CS3110 Module8 Group3/bin/Debug/CS3110 Module8 Group3.pdb
+/Users/mitchellogden/RiderProjects/Group3BattleshipAI/CS3110 Module8 Group3/obj/Debug/CS3110 Module8 Group3.csprojAssemblyReference.cache
+/Users/mitchellogden/RiderProjects/Group3BattleshipAI/CS3110 Module8 Group3/obj/Debug/CS3110 Module8 Group3.csproj.CoreCompileInputs.cache
+/Users/mitchellogden/RiderProjects/Group3BattleshipAI/CS3110 Module8 Group3/obj/Debug/CS3110 Module8 Group3.exe
+/Users/mitchellogden/RiderProjects/Group3BattleshipAI/CS3110 Module8 Group3/obj/Debug/CS3110 Module8 Group3.pdb
