@@ -73,7 +73,7 @@ namespace Module8
             if (_targetStack.Count > 0)
             {
                 // Check if the next target in the stack has already been sunk, if so pop that value and check the next
-                while(_playersData[_targetStack.Peek().PlayerIndex].StatusGrid[_targetStack.Peek().GridPosition.Y,_targetStack.Peek().GridPosition.X] == AttackResultType.Sank)
+                while(_playersData[_targetStack.Peek().PlayerIndex].StatusGrid[_targetStack.Peek().GridPosition.Y,_targetStack.Peek().GridPosition.X] == StatusType.Sank)
                     _targetStack.Pop();
                 
                 _currentTarget = _targetStack.Pop();
@@ -115,7 +115,7 @@ namespace Module8
                 _lastAttack = _currentTarget.NorthAttackPositions.First();
                 Debug.WriteLine("Firing north of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.NorthAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -125,7 +125,7 @@ namespace Module8
                 _lastAttack = _currentTarget.EastAttackPositions.First();
                 Debug.WriteLine("Firing east of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.EastAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -135,7 +135,7 @@ namespace Module8
                 _lastAttack = _currentTarget.SouthAttackPositions.First();
                 Debug.WriteLine("Firing south of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.SouthAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
             
@@ -145,7 +145,7 @@ namespace Module8
                 _lastAttack = _currentTarget.WestAttackPositions.First();
                 Debug.WriteLine("Firing west of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.WestAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -183,7 +183,7 @@ namespace Module8
                     {
                         if (r.ResultType == AttackResultType.Sank)
                         {
-                            if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != AttackResultType.Sank)
+                            if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != StatusType.Sank)
                                 _playersData[r.PlayerIndex].SunkShip(r.SunkShip,r.Position);
                             
                             Debug.WriteLine("Current target originating at ({0},{1}) has been sunk, turning off elimination mode.",_currentTarget.GridPosition.X, _currentTarget.GridPosition.Y);
@@ -197,7 +197,7 @@ namespace Module8
                         
                         if (r.ResultType == AttackResultType.Hit)
                         {
-                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Hit;
+                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = StatusType.Hit;
                             Debug.WriteLine("Current target originating at ({0},{1}) has been hit at position ({2},{3}), continue attack {4} of the origin point.",_currentTarget.GridPosition.X, _currentTarget.GridPosition.Y, r.Position.X,r.Position.Y, _currentTargetDirection);
 #if DEBUG
 
@@ -208,7 +208,7 @@ namespace Module8
                         
                         if (r.ResultType == AttackResultType.Miss)
                         {
-                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Miss;
+                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = StatusType.Miss;
                             if (_currentTargetDirection == CurrentTargetDirectionTypes.North)
                             {
                                 Debug.WriteLine("Shot fired at position ({0},{1}) missed, clearing remaining positions North of origin point ({2},{3}) and moving to points East of the origin.",r.Position.X,r.Position.Y,_currentTarget.GridPosition.X,_currentTarget.GridPosition.Y);
@@ -248,7 +248,7 @@ namespace Module8
                 {
                     if (r.ResultType == AttackResultType.Sank)
                     {
-                        if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != AttackResultType.Sank)
+                        if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != StatusType.Sank)
                             _playersData[r.PlayerIndex].SunkShip(r.SunkShip,r.Position);
 #if DEBUG
 
@@ -265,7 +265,7 @@ namespace Module8
                             // Check if position is already marked Hit in the status grid to ensure duplicate targets aren't created.
                             // Happens when dumb player shoots on a position that has already been fired upon.
                             if (_playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] !=
-                                AttackResultType.Hit)
+                                StatusType.Hit)
                             {
                                 Debug.WriteLine("Player {0} reported a hit at ({1},{2}), adding a new target to the target stack.",r.PlayerIndex,r.Position.X,r.Position.Y);
                                 _targetStack.Push(new Target(r.PlayerIndex, r.Position,
@@ -277,7 +277,7 @@ namespace Module8
 #endif
                             }
                         }
-                        _playersData[r.PlayerIndex].StatusGrid[r.Position.X, r.Position.Y] = AttackResultType.Hit;
+                        _playersData[r.PlayerIndex].StatusGrid[r.Position.X, r.Position.Y] = StatusType.Hit;
 #if DEBUG
 
                         _playersData[r.PlayerIndex].DebugStatusGrid();
@@ -287,7 +287,7 @@ namespace Module8
 
                     if (r.ResultType == AttackResultType.Miss)
                     {
-                        _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Miss;
+                        _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = StatusType.Miss;
 #if DEBUG
 
                         _playersData[r.PlayerIndex].DebugStatusGrid();
@@ -489,7 +489,7 @@ namespace Module8
                                     break;
                                 }
 
-                                if (_playersData[playerIndex].StatusGrid[i + p, j] != 0 && _playersData[playerIndex].StatusGrid[i + p, j] != AttackResultType.Hit)
+                                if (_playersData[playerIndex].StatusGrid[i + p, j] != 0 && _playersData[playerIndex].StatusGrid[i + p, j] != StatusType.Hit)
                                     fits = false;
                             }
 
@@ -520,7 +520,7 @@ namespace Module8
                                     fits = false;
                                     break;
                                 }
-                                if (_playersData[playerIndex].StatusGrid[i, j + p] != 0 && _playersData[playerIndex].StatusGrid[i, j + p] != AttackResultType.Hit)
+                                if (_playersData[playerIndex].StatusGrid[i, j + p] != 0 && _playersData[playerIndex].StatusGrid[i, j + p] != StatusType.Hit)
                                     fits = false;
                             }
 

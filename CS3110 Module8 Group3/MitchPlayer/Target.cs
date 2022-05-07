@@ -12,7 +12,7 @@ namespace Module8
         public List<Position> WestAttackPositions { get; set; }
 
         // Constructor that grabs the player index, the position reported as a hit, and the current state of the status grid.
-        public Target(int index, Position position, AttackResultType[,] posStat)
+        public Target(int index, Position position, StatusType[,] posStat)
         {
 
             PlayerIndex = index;
