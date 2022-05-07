@@ -72,6 +72,10 @@ namespace Module8
                 return AttackCurrentTarget();
             if (_targetStack.Count > 0)
             {
+                // Check if the next target in the stack has already been sunk, if so pop that value and check the next
+                while(_playersData[_targetStack.Peek().PlayerIndex].StatusGrid[_targetStack.Peek().GridPosition.Y,_targetStack.Peek().GridPosition.X] == AttackResultType.Sank)
+                    _targetStack.Pop();
+                
                 _currentTarget = _targetStack.Pop();
                 _eliminateMode = true;
                 
@@ -111,7 +115,7 @@ namespace Module8
                 _lastAttack = _currentTarget.NorthAttackPositions.First();
                 Debug.WriteLine("Firing north of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.NorthAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -121,7 +125,7 @@ namespace Module8
                 _lastAttack = _currentTarget.EastAttackPositions.First();
                 Debug.WriteLine("Firing east of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.EastAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -131,7 +135,7 @@ namespace Module8
                 _lastAttack = _currentTarget.SouthAttackPositions.First();
                 Debug.WriteLine("Firing south of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.SouthAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
             
@@ -141,7 +145,7 @@ namespace Module8
                 _lastAttack = _currentTarget.WestAttackPositions.First();
                 Debug.WriteLine("Firing west of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.WestAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 && NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
