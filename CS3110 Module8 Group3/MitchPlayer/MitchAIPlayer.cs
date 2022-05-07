@@ -84,17 +84,9 @@ namespace Module8
             {
                 return new Position(0, 0);
             }
-            
-            // Figure out most vulnerable player based on number of ships left
-            foreach (var player in _playersData)
-            {
-                if (player.ShipsLeft < _lowestShipCount && player.Index != Index)
-                    _mostVulnerablePlayer = player.Index;
-                Debug.WriteLine($"Most vulnerable player identified as {_mostVulnerablePlayer}");
-            }
 
             // Find the most probable point for the most vulnerable player
-            return MostProbablePosition(_mostVulnerablePlayer);
+            return MostProbablePosition();
         }
         
         // AttackCurrentTarget will rotate counterclockwise through the unknown spaces surrounding the origin
@@ -156,17 +148,9 @@ namespace Module8
 
             _eliminateMode = false;
             Debug.WriteLine("No other shots can be taken on this target originating at ({0},{1}), turning off elimination mode.",_currentTarget.GridPosition.X,_currentTarget.GridPosition.Y);
-            
-            // Figure out most vulnerable player based on number of ships left
-            foreach (var player in _playersData)
-            {
-                if (player.ShipsLeft < _lowestShipCount && player.Index != Index)
-                    _mostVulnerablePlayer = player.Index;
-                Debug.WriteLine($"Most vulnerable player identified as {_mostVulnerablePlayer}");
-            }
-            
+
             // Find the most probable point for the most vulnerable player
-            return MostProbablePosition(_mostVulnerablePlayer);
+            return MostProbablePosition();
         }
 
         // SetAttackResults 
@@ -419,10 +403,21 @@ namespace Module8
         //
         //    Return position from the list of positions with the highest score on the ProbabilityGrid.
 
-        private Position MostProbablePosition(int playerIndex)
+        private Position MostProbablePosition()
         {
             Debug.WriteLine("Called MostProbablePosition");
-
+            
+            // Stores player index
+            int playerIndex = -1;
+            
+            // Figure out most vulnerable player based on number of ships left
+            foreach (var player in _playersData)
+            {
+                if (player.ShipsLeft < _lowestShipCount && player.Index != Index)
+                    playerIndex = player.Index;
+                Debug.WriteLine($"Most vulnerable player identified as {playerIndex}");
+            }
+            
             ProbabilityGrid = new int[GridSize,GridSize];
             
             Position mostProbable = new Position(0, 0); // Initialize to origin at the beginning of each execute
