@@ -1,0 +1,7 @@
+/Users/mitchellogden/RiderProjects/BattleshipStart/Module8/bin/Debug/Module8.exe.config
+/Users/mitchellogden/RiderProjects/BattleshipStart/Module8/bin/Debug/Module8.exe
+/Users/mitchellogden/RiderProjects/BattleshipStart/Module8/bin/Debug/Module8.pdb
+/Users/mitchellogden/RiderProjects/BattleshipStart/Module8/obj/Debug/Module8.csprojAssemblyReference.cache
+/Users/mitchellogden/RiderProjects/BattleshipStart/Module8/obj/Debug/Module8.csproj.CoreCompileInputs.cache
+/Users/mitchellogden/RiderProjects/BattleshipStart/Module8/obj/Debug/Module8.exe
+/Users/mitchellogden/RiderProjects/BattleshipStart/Module8/obj/Debug/Module8.pdb
