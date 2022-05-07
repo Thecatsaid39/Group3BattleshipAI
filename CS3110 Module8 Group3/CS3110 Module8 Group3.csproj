@@ -50,7 +50,6 @@
     <Compile Include="MitchPlayer\CurrentTargetDirection.cs" />
     <Compile Include="MitchPlayer\MitchAIPlayer.cs" />
     <Compile Include="MitchPlayer\PlayerData.cs" />
-    <Compile Include="MitchPlayer\StatusType.cs" />
     <Compile Include="MitchPlayer\Target.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="MultiPlayerBattleShip.cs" />
