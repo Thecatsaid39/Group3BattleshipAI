@@ -12,7 +12,7 @@ namespace Module8
         public List<Position> WestAttackPositions { get; set; }
 
         // Constructor that grabs the player index, the position reported as a hit, and the current state of the status grid.
-        public Target(int index, Position position, StatusType[,] posStat)
+        public Target(int index, Position position, AttackResultType[,] posStat)
         {
 
             PlayerIndex = index;
@@ -26,28 +26,28 @@ namespace Module8
             for (int i = position.Y - 1; i >= 0; i--)
             {
 
-                if (posStat[position.X, i] == StatusType.Unknown)
+                if (posStat[position.X, i] == 0)
                     NorthAttackPositions.Add(new Position(position.X, i));
             }
 
             for (int i = position.Y + 1; i < posStat.GetLength(1); i++)
             {
 
-                if (posStat[position.X, i] == StatusType.Unknown)
+                if (posStat[position.X, i] == 0)
                     SouthAttackPositions.Add(new Position(position.X, i));
             }
 
             for (int i = position.X - 1; i >= 0; i--)
             {
 
-                if (posStat[i, position.Y] == StatusType.Unknown)
+                if (posStat[i, position.Y] == 0)
                     WestAttackPositions.Add(new Position(i, position.Y));
             }
 
             for (int i = position.X + 1; i < posStat.GetLength(0); i++)
             {
 
-                if (posStat[i, position.Y] == StatusType.Unknown)
+                if (posStat[i, position.Y] == 0)
                     EastAttackPositions.Add(new Position(i, position.Y));
             }
 

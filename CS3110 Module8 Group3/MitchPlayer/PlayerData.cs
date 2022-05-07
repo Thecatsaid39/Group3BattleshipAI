@@ -7,7 +7,7 @@ namespace Module8
 {
     public class PlayerData
     {
-        public StatusType[,] StatusGrid { get; set; } // Used to store status values per grid point
+        public AttackResultType[,] StatusGrid { get; set; } // Used to store status values per grid point
         public int ShipsLeft { get; set; } // Counter from the value of ships left.
         public int Index { get; set; } // Store player index
 
@@ -21,26 +21,11 @@ namespace Module8
             _ships = ships._ships;
             
             // Create probability/status grid
-            StatusGrid = new StatusType[gridSize, gridSize];
+            StatusGrid = new AttackResultType[gridSize, gridSize];
 
-            // Initialize oll positions of status grid with Unknown
-            for (int i = 0; i < gridSize; i++)
-            {
-                for (int j = 0; j < gridSize; j++)
-                    StatusGrid[i, j] = StatusType.Unknown;
-            }
-            
             // Log initial result
-            if (result.ResultType == AttackResultType.Hit)
-            {
-                StatusGrid[result.Position.X, result.Position.Y] = StatusType.Hit;
-            }
-            
-            if (result.ResultType == AttackResultType.Miss)
-            {
-                StatusGrid[result.Position.X, result.Position.Y] = StatusType.Miss;
-            }
-                        
+            StatusGrid[result.Position.X, result.Position.Y] = result.ResultType;
+
         }
 
         // In the event that a ship is sunk, mark related hit positions as sunk.
@@ -80,13 +65,13 @@ namespace Module8
                 for (int j = 0; j < StatusGrid.GetLength(1); j++)
                 {
                     
-                    if(StatusGrid[i,j] == StatusType.Hit)
+                    if(StatusGrid[i,j] == AttackResultType.Hit)
                         Debug.Write("| H|");
-                    if(StatusGrid[i,j] == StatusType.Miss)
+                    if(StatusGrid[i,j] == AttackResultType.Miss)
                         Debug.Write("| M|");
-                    if(StatusGrid[i,j] == StatusType.Sunk)
+                    if(StatusGrid[i,j] == AttackResultType.Sank)
                         Debug.Write("| S|");
-                    if(StatusGrid[i,j] == StatusType.Unknown)
+                    if(StatusGrid[i,j] == 0)
                         Debug.Write("| U|");
                     
                 }
@@ -108,13 +93,13 @@ namespace Module8
                 {
                     Debug.WriteLine($"Checking position north of origin @ ({position.X},{i})");
 
-                    if (StatusGrid[i, position.X] == StatusType.Hit)
+                    if (StatusGrid[i, position.X] == AttackResultType.Hit)
                     {
                         Debug.WriteLine($"Adding hit position north of origin @ ({position.X},{i})");
                         possiblePositions.Add(new Position(position.X, i));
                     }
 
-                    if (StatusGrid[i, position.X] != StatusType.Hit)
+                    if (StatusGrid[i, position.X] != AttackResultType.Hit)
                     {
                         valid = false;
                         break;
@@ -143,13 +128,13 @@ namespace Module8
 
                     Debug.WriteLine($"Checking position south of origin @ ({position.X},{i})");
 
-                    if (StatusGrid[i, position.X] == StatusType.Hit)
+                    if (StatusGrid[i, position.X] == AttackResultType.Hit)
                     {
                         Debug.WriteLine($"Adding hit position south of origin @ ({position.X},{i})");
                         possiblePositions.Add(new Position(position.X, i));
                     }
                     
-                    if (StatusGrid[i, position.X] != StatusType.Hit)
+                    if (StatusGrid[i, position.X] != AttackResultType.Hit)
                     {
                         valid = false;
                         break;
@@ -183,7 +168,7 @@ namespace Module8
                     {
                         Debug.WriteLine($"Checking position left of origin @ ({i},{position.Y})");
 
-                        if (StatusGrid[position.Y, i] == StatusType.Hit)
+                        if (StatusGrid[position.Y, i] == AttackResultType.Hit)
                         {
                             Debug.WriteLine($"Adding hit position left of origin @ ({i},{position.Y})");
                             possiblePositions.Add(new Position(i, position.Y));
@@ -218,7 +203,7 @@ namespace Module8
 
                         Debug.WriteLine($"Checking position right of origin @ ({i},{position.Y})");
 
-                        if (StatusGrid[position.Y, i] == StatusType.Hit)
+                        if (StatusGrid[position.Y, i] == AttackResultType.Hit)
                         {
                             Debug.WriteLine($"Adding hit position right of origin @ ({i},{position.Y})");
                             possiblePositions.Add(new Position(i, position.Y));
@@ -237,10 +222,10 @@ namespace Module8
             
             // Change each position to Sunk
             foreach (var t in possiblePositions)
-                StatusGrid[t.Y, t.X] = StatusType.Sunk;
+                StatusGrid[t.Y, t.X] = AttackResultType.Sank;
             
             // Change origin position to sunk
-            StatusGrid[position.Y, position.X] = StatusType.Sunk;
+            StatusGrid[position.Y, position.X] = AttackResultType.Sank;
 
             ShipsLeft--;
         }

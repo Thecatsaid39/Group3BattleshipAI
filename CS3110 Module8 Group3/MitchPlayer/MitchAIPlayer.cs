@@ -120,7 +120,7 @@ namespace Module8
                 _lastAttack = _currentTarget.NorthAttackPositions.First();
                 Debug.WriteLine("Firing north of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.NorthAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -130,7 +130,7 @@ namespace Module8
                 _lastAttack = _currentTarget.EastAttackPositions.First();
                 Debug.WriteLine("Firing east of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.EastAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -140,7 +140,7 @@ namespace Module8
                 _lastAttack = _currentTarget.SouthAttackPositions.First();
                 Debug.WriteLine("Firing south of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.SouthAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
                     return _lastAttack;
             }
             
@@ -150,7 +150,7 @@ namespace Module8
                 _lastAttack = _currentTarget.WestAttackPositions.First();
                 Debug.WriteLine("Firing west of origin point at ({0},{1})",_lastAttack.X,_lastAttack.Y);
                 _currentTarget.WestAttackPositions.RemoveAt(0);
-                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == StatusType.Unknown & NotMyShip(_lastAttack))
+                if (_playersData[_currentTarget.PlayerIndex].StatusGrid[_lastAttack.X, _lastAttack.Y] == 0 & NotMyShip(_lastAttack))
                     return _lastAttack;
             }
 
@@ -195,7 +195,7 @@ namespace Module8
                     {
                         if (r.ResultType == AttackResultType.Sank)
                         {
-                            if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != StatusType.Sunk)
+                            if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != AttackResultType.Sank)
                                 _playersData[r.PlayerIndex].SunkShip(r.SunkShip,r.Position);
                             
                             Debug.WriteLine("Current target originating at ({0},{1}) has been sunk, turning off elimination mode.",_currentTarget.GridPosition.X, _currentTarget.GridPosition.Y);
@@ -205,14 +205,14 @@ namespace Module8
                         
                         if (r.ResultType == AttackResultType.Hit)
                         {
-                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = StatusType.Hit;
+                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Hit;
                             Debug.WriteLine("Current target originating at ({0},{1}) has been hit at position ({2},{3}), continue attack {4} of the origin point.",_currentTarget.GridPosition.X, _currentTarget.GridPosition.Y, r.Position.X,r.Position.Y, _currentTargetDirection);
 
                         }
                         
                         if (r.ResultType == AttackResultType.Miss)
                         {
-                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = StatusType.Miss;
+                            _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Miss;
                             if (_currentTargetDirection == CurrentTargetDirectionTypes.North)
                             {
                                 Debug.WriteLine("Shot fired at position ({0},{1}) missed, clearing remaining positions North of origin point ({2},{3}) and moving to points East of the origin.",r.Position.X,r.Position.Y,_currentTarget.GridPosition.X,_currentTarget.GridPosition.Y);
@@ -249,7 +249,7 @@ namespace Module8
                     {
                         Debug.WriteLine("Player {0} reported a sunk ship at ({1},{2}), marking the status grid with a hit.",r.PlayerIndex,r.Position.X,r.Position.Y);
                         
-                        if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != StatusType.Sunk)
+                        if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != AttackResultType.Sank)
                             _playersData[r.PlayerIndex].SunkShip(r.SunkShip,r.Position);
                     }
 
@@ -260,12 +260,12 @@ namespace Module8
                             Debug.WriteLine("Player {0} reported a hit at ({1},{2}), adding a new target to the target stack.",r.PlayerIndex,r.Position.X,r.Position.Y);
                             _targetStack.Push(new Target(r.PlayerIndex, r.Position, _playersData[r.PlayerIndex].StatusGrid));
                         }
-                        _playersData[r.PlayerIndex].StatusGrid[r.Position.X, r.Position.Y] = StatusType.Hit;
+                        _playersData[r.PlayerIndex].StatusGrid[r.Position.X, r.Position.Y] = AttackResultType.Hit;
                     }
 
                     if (r.ResultType == AttackResultType.Miss)
                     {
-                        _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = StatusType.Miss;
+                        _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Miss;
                     }
 
                 }
@@ -438,13 +438,13 @@ namespace Module8
                 for (int j = 0; j < _playersData[playerIndex].StatusGrid.GetLength(1); j++)
                 {
                     
-                    if(_playersData[playerIndex].StatusGrid[i,j] == StatusType.Hit)
+                    if(_playersData[playerIndex].StatusGrid[i,j] == AttackResultType.Hit)
                         Debug.Write("| H|");
-                    if(_playersData[playerIndex].StatusGrid[i,j] == StatusType.Miss)
+                    if(_playersData[playerIndex].StatusGrid[i,j] == AttackResultType.Miss)
                         Debug.Write("| M|");
-                    if(_playersData[playerIndex].StatusGrid[i,j] == StatusType.Sunk)
+                    if(_playersData[playerIndex].StatusGrid[i,j] == AttackResultType.Sank)
                         Debug.Write("| S|");
-                    if(_playersData[playerIndex].StatusGrid[i,j] == StatusType.Unknown)
+                    if(_playersData[playerIndex].StatusGrid[i,j] == 0)
                         Debug.Write("| U|");
                     
                 }
@@ -470,7 +470,7 @@ namespace Module8
                                     break;
                                 }
 
-                                if (_playersData[playerIndex].StatusGrid[i + p, j] != StatusType.Unknown && _playersData[playerIndex].StatusGrid[i + p, j] != StatusType.Hit)
+                                if (_playersData[playerIndex].StatusGrid[i + p, j] != 0 && _playersData[playerIndex].StatusGrid[i + p, j] != AttackResultType.Hit)
                                     fits = false;
                             }
 
@@ -501,7 +501,7 @@ namespace Module8
                                     fits = false;
                                     break;
                                 }
-                                if (_playersData[playerIndex].StatusGrid[i, j + p] != StatusType.Unknown && _playersData[playerIndex].StatusGrid[i, j + p] != StatusType.Hit)
+                                if (_playersData[playerIndex].StatusGrid[i, j + p] != 0 && _playersData[playerIndex].StatusGrid[i, j + p] != AttackResultType.Hit)
                                     fits = false;
                             }
 
