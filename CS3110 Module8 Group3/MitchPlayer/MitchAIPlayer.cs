@@ -167,7 +167,7 @@ namespace Module8
             {
                 // Initialize _playersData to player count
                 _playersData = new List<PlayerData>(results.Count);
-                Debug.WriteLine($"{_playersData.Count} Players are being added to _playersData");
+                Debug.WriteLine($"{results.Count} Players are being added to _playersData");
                 foreach (var r in results)
                 {
                     Debug.WriteLine($"Player {r.PlayerIndex} has been added with an initial value of {r.ResultType} in it's status grid at ({r.Position.X},{r.Position.Y})");
@@ -187,7 +187,11 @@ namespace Module8
                                 _playersData[r.PlayerIndex].SunkShip(r.SunkShip,r.Position);
                             
                             Debug.WriteLine("Current target originating at ({0},{1}) has been sunk, turning off elimination mode.",_currentTarget.GridPosition.X, _currentTarget.GridPosition.Y);
-                            
+#if DEBUG
+
+                            _playersData[r.PlayerIndex].DebugStatusGrid();
+
+#endif
                             _eliminateMode = false;
                         }
                         
@@ -195,7 +199,11 @@ namespace Module8
                         {
                             _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Hit;
                             Debug.WriteLine("Current target originating at ({0},{1}) has been hit at position ({2},{3}), continue attack {4} of the origin point.",_currentTarget.GridPosition.X, _currentTarget.GridPosition.Y, r.Position.X,r.Position.Y, _currentTargetDirection);
+#if DEBUG
 
+                            _playersData[r.PlayerIndex].DebugStatusGrid();
+
+#endif
                         }
                         
                         if (r.ResultType == AttackResultType.Miss)
@@ -225,6 +233,11 @@ namespace Module8
                                 _currentTarget.WestAttackPositions.Clear();
                                 _eliminateMode = false;
                             }
+#if DEBUG
+
+                            _playersData[r.PlayerIndex].DebugStatusGrid();
+
+#endif
                         }
                     }
                 }
@@ -235,28 +248,51 @@ namespace Module8
                 {
                     if (r.ResultType == AttackResultType.Sank)
                     {
-                        Debug.WriteLine("Player {0} reported a sunk ship at ({1},{2}), marking the status grid with a hit.",r.PlayerIndex,r.Position.X,r.Position.Y);
-                        
                         if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != AttackResultType.Sank)
                             _playersData[r.PlayerIndex].SunkShip(r.SunkShip,r.Position);
+#if DEBUG
+
+                        _playersData[r.PlayerIndex].DebugStatusGrid();
+
+#endif
                     }
 
                     if (r.ResultType == AttackResultType.Hit)
                     {
                         if (r.PlayerIndex != Index)
                         {
-                            Debug.WriteLine("Player {0} reported a hit at ({1},{2}), adding a new target to the target stack.",r.PlayerIndex,r.Position.X,r.Position.Y);
+                            
                             // Check if position is already marked Hit in the status grid to ensure duplicate targets aren't created.
                             // Happens when dumb player shoots on a position that has already been fired upon.
-                            if(_playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] != AttackResultType.Hit)
-                                _targetStack.Push(new Target(r.PlayerIndex, r.Position, _playersData[r.PlayerIndex].StatusGrid));
+                            if (_playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] !=
+                                AttackResultType.Hit)
+                            {
+                                Debug.WriteLine("Player {0} reported a hit at ({1},{2}), adding a new target to the target stack.",r.PlayerIndex,r.Position.X,r.Position.Y);
+                                _targetStack.Push(new Target(r.PlayerIndex, r.Position,
+                                    _playersData[r.PlayerIndex].StatusGrid));
+#if DEBUG
+
+                                _playersData[r.PlayerIndex].DebugStatusGrid();
+
+#endif
+                            }
                         }
                         _playersData[r.PlayerIndex].StatusGrid[r.Position.X, r.Position.Y] = AttackResultType.Hit;
+#if DEBUG
+
+                        _playersData[r.PlayerIndex].DebugStatusGrid();
+
+#endif
                     }
 
                     if (r.ResultType == AttackResultType.Miss)
                     {
                         _playersData[r.PlayerIndex].StatusGrid[r.Position.Y, r.Position.X] = AttackResultType.Miss;
+#if DEBUG
+
+                        _playersData[r.PlayerIndex].DebugStatusGrid();
+
+#endif
                     }
 
                 }
@@ -418,10 +454,10 @@ namespace Module8
             int playerIndex = -1;
             
             // Figure out most vulnerable player based on number of ships left
-            foreach (var player in _playersData)
+            for(int i = 0; i < _playersData.Count; i++)
             {
-                if (player.ShipsLeft < _lowestShipCount && player.Index != Index)
-                    playerIndex = player.Index;
+                if (_playersData[i].ShipsLeft <= _lowestShipCount && _playersData[i].Index != Index)
+                    playerIndex = _playersData[i].Index;
                 Debug.WriteLine($"Most vulnerable player identified as {playerIndex}");
             }
             
@@ -432,27 +468,8 @@ namespace Module8
             
             
             #if DEBUG
-            Debug.WriteLine($"Player {playerIndex} Status Grid");
-            Debug.WriteLine("________");
-            
-            for (int i = 0; i < _playersData[playerIndex].StatusGrid.GetLength(0); i++)
-            {
-                for (int j = 0; j < _playersData[playerIndex].StatusGrid.GetLength(1); j++)
-                {
-                    
-                    if(_playersData[playerIndex].StatusGrid[i,j] == AttackResultType.Hit)
-                        Debug.Write("| H|");
-                    if(_playersData[playerIndex].StatusGrid[i,j] == AttackResultType.Miss)
-                        Debug.Write("| M|");
-                    if(_playersData[playerIndex].StatusGrid[i,j] == AttackResultType.Sank)
-                        Debug.Write("| S|");
-                    if(_playersData[playerIndex].StatusGrid[i,j] == 0)
-                        Debug.Write("| U|");
-                    
-                }
-                Debug.WriteLine("");
-            }
-            Debug.WriteLine("________");
+
+            _playersData[playerIndex].DebugStatusGrid();
 
             #endif
             

@@ -16,7 +16,7 @@ namespace Module8
             
 
             MultiPlayerBattleShip game = new MultiPlayerBattleShip(players);
-            game.Play(PlayMode.NoDelay);  // Play the game with this "play mode"
+            game.Play(PlayMode.Pause);  // Play the game with this "play mode"
         }
     }
 }
