@@ -172,6 +172,9 @@ namespace Module8
                 {
                     Debug.WriteLine($"Player {r.PlayerIndex} has been added with an initial value of {r.ResultType} in it's status grid at ({r.Position.X},{r.Position.Y})");
                     _playersData.Insert(r.PlayerIndex,new PlayerData(GridSize,_ships, r));
+                    if(r.ResultType == AttackResultType.Hit)
+                        _targetStack.Push(new Target(r.PlayerIndex, r.Position,
+                            _playersData[r.PlayerIndex].StatusGrid));
                 }
             }
             
@@ -277,7 +280,7 @@ namespace Module8
 #endif
                             }
                         }
-                        _playersData[r.PlayerIndex].StatusGrid[r.Position.X, r.Position.Y] = StatusType.Hit;
+                        _playersData[r.PlayerIndex].StatusGrid[r.Position.Y,r.Position.X] = StatusType.Hit;
 #if DEBUG
 
                         _playersData[r.PlayerIndex].DebugStatusGrid();

@@ -47,6 +47,8 @@
     <Compile Include="DumbPlayer\DumbPlayer.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridEntry.cs" />
+    <Compile Include="JeanellPlayer\JeanellAIPlayer.cs" />
+    <Compile Include="JeanellPlayer\NewTarget.cs" />
     <Compile Include="MitchPlayer\CurrentTargetDirection.cs" />
     <Compile Include="MitchPlayer\MitchAIPlayer.cs" />
     <Compile Include="MitchPlayer\PlayerData.cs" />

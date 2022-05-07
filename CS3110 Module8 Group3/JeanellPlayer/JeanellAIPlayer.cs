@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Module8
 {
-    internal class AshleyAIPlayer : IPlayer
+    internal class JeanellAIPlayer : IPlayer
     {
         private List<Position> HitPositions = new List<Position>(); // stores all ‘hit’ guesses
         private List<Position> MissPositions = new List<Position>(); // stores all ‘miss’ guesses
@@ -17,10 +17,16 @@ namespace Module8
         private Position _lastShot;
         private bool _selfDestruct = false;
         private int _zeroZeroCounter = 0;
+        private List<NewTarget> _targetList = new List<NewTarget>(); // Storing targets
+        
+        // Variables for currentTarget attack
+        private int _positionIncrement;
+        private char _currentDirection;
+        private NewTarget _currentTarget;
 
 
         // Constructor:
-        public AshleyAIPlayer(string name)
+        public JeanellAIPlayer(string name)
         {
             Name = name;
         }
@@ -217,6 +223,7 @@ namespace Module8
                 }
                 else if (r.ResultType == AttackResultType.Hit)
                 {
+                    _targetList.Add(new NewTarget(r.PlayerIndex,r.Position));
                     if (HitPositions.Contains(r.Position) == false)
                         HitPositions.Add(r.Position);
                 }

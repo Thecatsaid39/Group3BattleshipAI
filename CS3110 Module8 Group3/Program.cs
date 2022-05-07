@@ -10,9 +10,11 @@ namespace Module8
         {
             List<IPlayer> players = new List<IPlayer>();
             players.Add(new DumbPlayer("Dumb"));
-            //players.Add(new RandomPlayer("Random"));
-            //players.Add(new AshleyAIPlayer("Ashley"));
-            players.Add(new MitchAIPlayer("Mitch"));
+            players.Add(new RandomPlayer("Random"));
+            players.Add(new DumbPlayer("Dumb Dog"));
+            players.Add(new RandomPlayer("Random Cat"));
+            players.Add(new AshleyAIPlayer("Ashley"));
+            //players.Add(new MitchAIPlayer("Mitch"));
             
 
             MultiPlayerBattleShip game = new MultiPlayerBattleShip(players);

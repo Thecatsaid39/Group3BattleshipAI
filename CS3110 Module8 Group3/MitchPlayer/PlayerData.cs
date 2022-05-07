@@ -34,6 +34,7 @@ namespace Module8
             if (result.ResultType == AttackResultType.Hit)
             {
                 StatusGrid[result.Position.X, result.Position.Y] = StatusType.Hit;
+                
             }
             
             if (result.ResultType == AttackResultType.Miss)
