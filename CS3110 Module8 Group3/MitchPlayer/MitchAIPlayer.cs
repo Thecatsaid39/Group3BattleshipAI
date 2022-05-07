@@ -489,7 +489,7 @@ namespace Module8
                                     break;
                                 }
 
-                                if (_playersData[playerIndex].StatusGrid[i + p, j] != 0 && _playersData[playerIndex].StatusGrid[i + p, j] != StatusType.Hit)
+                                if (_playersData[playerIndex].StatusGrid[i + p, j] != StatusType.Unknown && _playersData[playerIndex].StatusGrid[i + p, j] != StatusType.Hit)
                                     fits = false;
                             }
 
@@ -520,7 +520,7 @@ namespace Module8
                                     fits = false;
                                     break;
                                 }
-                                if (_playersData[playerIndex].StatusGrid[i, j + p] != 0 && _playersData[playerIndex].StatusGrid[i, j + p] != StatusType.Hit)
+                                if (_playersData[playerIndex].StatusGrid[i, j + p] != StatusType.Unknown && _playersData[playerIndex].StatusGrid[i, j + p] != StatusType.Hit)
                                     fits = false;
                             }
 
