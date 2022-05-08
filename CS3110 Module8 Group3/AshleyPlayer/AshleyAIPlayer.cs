@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 
-namespace Module8
+namespace CS3110.Module8.Group3
 {
     internal class AshleyAIPlayer : IPlayer
     {
@@ -14,9 +16,6 @@ namespace Module8
         private Ships _ships; // size of grid
         private static readonly Random Random = new Random(); // used to randomize choices
         private char[] directions = { 'N', 'E', 'S', 'W' }; //represents north, east, south, west
-        private Position _lastShot;
-        private bool _selfDestruct = false;
-        private int _zeroZeroCounter = 0;
 
 
         // Constructor:
@@ -28,7 +27,7 @@ namespace Module8
         // Property that returns player's name:
         public string Name { get; }
 
-        // Property that returns player's index in turn order.
+        // Propery that reutn's player's indexin turn order.
         public int Index => _index;
 
 
@@ -41,29 +40,23 @@ namespace Module8
         {
             _gridSize = gridSize;
             _index = playerIndex;
-            // **** TBD ****
-            // TBD: Find a 'smarter' way to place ships.
-            // Currently: this borrows from RandomPlayer, which just puts the ships in the grid in Random columns
-            //Note it cannot deal with the case where there's not enough columns
-            //for 1 per ship
-            // **** TBD ****
+           
 
-            var availableColumns = new List<int>();
-            for (int i = 0; i < gridSize; i++)
-            {
-                availableColumns.Add(i);
-            }
-
-            _ships = ships;
+    _ships = ships;
             foreach (var ship in ships._ships)
             {
-                // Pick an open X from the remaining columns
-                var x = availableColumns[Random.Next(availableColumns.Count)];
-                availableColumns.Remove(x); //Make sure we can't pick it again
+                //while(ship != null)
+                {
 
-                // Pick a Y that fits
-                var y = Random.Next(gridSize - ship.Length);
-                ship.Place(new Position(x, y), Direction.Vertical);
+
+                    // Pick an open X from the remaining columns
+                    var x = availableColumns[Random.Next(availableColumns.Count)];
+                    availableColumns.Remove(x); //Make sure we can't pick it again
+
+                    // Pick a Y that fits
+                    var y = Random.Next(gridSize - ship.Length);
+                    ship.Place(new Position(x, y), Direction.Vertical);
+                }
             }
         }
 
@@ -81,7 +74,6 @@ namespace Module8
                 {
                     guess = GetAdjacent(position, direction);
                     if (guess != null)
-                        
                         break;
                 }
                 if (guess != null)
@@ -89,17 +81,10 @@ namespace Module8
             }
 
             // If guess is null by now, that means nothing has been found.
-            // **** TBD ****
-            // - (3) TBD: Otherwise, the AI will randomly select a space. If this space is on the grid, open, and dosn't contain the AI’s
-            // own ships, it will shoot at it.
-            // - (4) TBD: Repeat (3) X amount of times. X scales based on grid size.
-            // - (5) TBD: If still not shot has been taken, the AI will fire at any open spot at the grid, regardless of its own ships.
-            // **** TBD ****
+          
             if (guess == null)
                 guess = new Position(0, 0); // ( This is a placeholder that just guesses 0, 0. )
-            
-            // Store guess to check against for not my battleship logic
-            _lastShot = guess;
+
             return guess;
 
         }
@@ -114,11 +99,11 @@ namespace Module8
 
             // shift in the desired adjacent direction
             if (direction == 'N')
-                y--;
+                y++;
             else if (direction == 'E')
                 x++;
             else if (direction == 'S')
-                y++;
+                y--;
             else if (direction == 'W')
                 x--;
             else
@@ -137,48 +122,43 @@ namespace Module8
 
         }
 
+        
+
         // This method, given a position, checks if it is a valid spot at which to fire.
         // Valid spots do not contain the player's own ships, have not already been shot at, and
         // are on the grid.
         internal bool IsValid(Position p)
         {
-            if (p.X == 0 && p.Y == 0)
-                _zeroZeroCounter++;
-            
-            if (_zeroZeroCounter > 2)
-                if (p.X == 0 && p.Y == 0)
-                    _selfDestruct = true;
-            
             // Check to see if spot contains the AI's ship.
-            /*
-            foreach (Ship s in _ships._ships)
-            {
-                foreach (Position ShipPosition in s.Positions)
-                {
-                    if (ShipPosition.X == p.X && ShipPosition.Y == p.Y)
-                    {
-                        return false;
-                    }
-                }
-            }
-            */
+            //foreach (Ship s in _ships._ships)
+            //{
+
+
+               // foreach (Position ShipPosition in s.Positions)
+                //{
+                    //while (!Ships.ShipType.Battleship)
+
+                   // if (ShipPosition.X == p.X && ShipPosition.Y == p.Y)
+
+                   // {
+                      //  return false;
+                   // }
+                //}
+           // }
+           // IEnumerable<ShipTypes> results;
+
+            //foreach (Ship s in _ships._ships)
+            //{
+              //  results = from position in s.Positions
+                          //where position.X == p.X && position.Y == p.Y
+                          //select s.ShipType;
+            //}
+
+
+               // foreach (var r in results)
+                    //if (r == ShipTypes.Battleship)
+                       // return false;
             
-            // Self Destruct Protocol
-            if (!_selfDestruct)
-            {
-                IEnumerable<ShipTypes> result = new List<ShipTypes>();
-
-                foreach (Ship s in _ships._ships)
-                {
-                    result = from position in s.Positions
-                        where position.X == p.X && position.Y == p.Y
-                        select s.ShipType;
-                }
-
-                foreach (var r in result)
-                    if (r == ShipTypes.Battleship)
-                        return false;
-            }
 
             // Check to see if spot has already been shot at
             foreach (List<Position> LoggedPositions in new[] { HitPositions, MissPositions, SankPositions })
@@ -226,14 +206,114 @@ namespace Module8
                         SankPositions.Add(r.Position);
                 }
             }
-
-            
         }
-        
-        
-        
+
+   //_ships = ships;
+
+            //returns true if the ship will fit in the horizontal direction
+       bool availablerow(int x, int y, int ships)
+       {
+            try
+            {
+                for (int i = 0; i < ships; i++)
+                {
+                    if (gridSize[x, y + i] != '.')
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+        }
+        bool availableColumns(int x, int y, int ships)
+        {
+            try
+            {
+                for (int i = 0; i < ships; i++)
+
+                {
+
+                    if (gridSize[x + i, y] != '.')
+                    {
+                        return false;
+
+                    }
+                }
+
+                return true;
+            }
+
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+        }
+
+
+        public void populate(int shipCount)
+        {
+            Reset();
+            Random rng = new Random(); //ship placement will be random.
+            int row = 0; //variables for the row and column
+            int col = 0;
+
+
+            bool vertHor = false;
+            int shipNum = 0;
+            int shipSize = 1;
+            char shipChar = 'B';
+
+
+            do
+            {
+                //get a random location and direction for the ship
+                row = rng.Next(0, size);
+                col = rng.Next(0, size);
+                //generate a random true or false.
+                vertHor = (rng.Next(100) >= 50);
+
+                switch (shipNum + 1)
+                {
+                    case 1: shipSize = 5; shipChar = 'C'; break;
+                    case 2: shipSize = 2; shipChar = 'A'; break;
+                    case 3: shipSize = 5; shipChar = 'T'; break;
+                    case 4: shipSize = 2; shipChar = 'Z'; break;
+                    case 5: shipSize = 3; shipChar = 'S'; break;
+                    default: shipSize = 2; shipChar = 'B'; break;
+                }
+
+                //Check if you can add it to the location and not overlap
+                if (gridSize[row, col] == '.')
+                {
+
+                    if (availablerow(row, col, shipSize) == true & availableColumns(row, col, shipSize) == true)
+                    {
+
+
+                        for (int i = 0; i < shipSize; i++)
+                        {
+                            if (vertHor)
+                            {
+                                gridSize[row, col + i] = shipChar;
+                            }
+                            else
+                            {
+                                _gridSize[row + i, col] = shipChar;
+                            }
+                        }
+                        shipNum++;
+                    }
+                }
+            } while (shipNum < shipCount);
+        }
     }
-    
 }
+    
+
 
 
