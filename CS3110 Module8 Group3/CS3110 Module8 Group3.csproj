@@ -47,8 +47,10 @@
     <Compile Include="DumbPlayer\DumbPlayer.cs" />
     <Compile Include="Grid.cs" />
     <Compile Include="GridEntry.cs" />
-    <Compile Include="JeanellPlayer\JeanellAIPlayer.cs" />
-    <Compile Include="JeanellPlayer\NewTarget.cs" />
+    <Compile Include="Group3PlayerAI\CardinalDirection.cs" />
+    <Compile Include="Group3PlayerAI\Group3Player.cs" />
+    <Compile Include="Group3PlayerAI\NewTarget.cs" />
+    <Compile Include="Group3PlayerAI\NewPlayerData.cs" />
     <Compile Include="MitchPlayer\CurrentTargetDirection.cs" />
     <Compile Include="MitchPlayer\MitchAIPlayer.cs" />
     <Compile Include="MitchPlayer\PlayerData.cs" />

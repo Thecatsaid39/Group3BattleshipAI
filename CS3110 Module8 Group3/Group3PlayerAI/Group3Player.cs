@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Module8
 {
-    internal class JeanellAIPlayer : IPlayer
+    internal class Group3Player : IPlayer
     {
         private List<Position> HitPositions = new List<Position>(); // stores all ‘hit’ guesses
         private List<Position> MissPositions = new List<Position>(); // stores all ‘miss’ guesses
@@ -13,20 +13,13 @@ namespace Module8
         private int _gridSize; // size of grid
         private Ships _ships; // size of grid
         private static readonly Random Random = new Random(); // used to randomize choices
-        private char[] directions = { 'N', 'E', 'S', 'W' }; //represents north, east, south, west
         private Position _lastShot;
         private bool _selfDestruct = false;
         private int _zeroZeroCounter = 0;
-        private List<NewTarget> _targetList = new List<NewTarget>(); // Storing targets
         
-        // Variables for currentTarget attack
-        private int _positionIncrement;
-        private char _currentDirection;
-        private NewTarget _currentTarget;
-
 
         // Constructor:
-        public JeanellAIPlayer(string name)
+        public Group3Player(string name)
         {
             Name = name;
         }
